@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock FIFA Ranking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>ระบบจัดอันดับ FIFA Ranking จำลอง</h1>
+        
+        <div class="tab-menu">
+            <button class="tab-link active" onclick="openTab(event, 'tab1')">1. นำเข้าข้อมูล</button>
+            <button class="tab-link" onclick="openTab(event, 'tab2')">2. ประมวลผล (เร็วๆ นี้)</button>
+            <button class="tab-link" onclick="openTab(event, 'tab3')">3. ตารางอันดับ (เร็วๆ นี้)</button>
+            <button class="tab-link" onclick="openTab(event, 'tab4')">4. ส่งออกข้อมูล</button>
+        </div>
+
+        <div id="tab1" class="tab-content" style="display: block;">
+    <h2>นำเข้าข้อมูลทีมและผลการแข่งขัน</h2>
+    
+    <div class="upload-section">
+        <h3>1. นำเข้าข้อมูลรายชื่อทีม (CSV)</h3>
+        <p>รูปแบบ: id, name, con, pts</p>
+        <div class="upload-controls">
+            <input type="file" id="teamFileInput" accept=".csv">
+            <button onclick="processTeamData()">โหลดข้อมูลทีม</button>
+        </div>
+    </div>
+
+    <div class="upload-section">
+        <h3>2. นำเข้าข้อมูลผลการแข่งขัน (CSV)</h3>
+        <p>รูปแบบ: fd, id1, r, id2, c, t</p>
+        <div class="upload-controls">
+            <input type="file" id="matchFileInput" accept=".csv">
+            <button onclick="processMatchData()">โหลดผลการแข่งขัน</button>
+        </div>
+    </div>
+
+    <div class="upload-section">
+        <h3>3. นำเข้าข้อมูลผลการแข่งขันแบบมีสกอร์ (CSV) <span style="font-size:14px; color:#e67e22;">*ไม่บังคับ</span></h3>
+        <p>รูปแบบ: fd, id1, score1, score2, id2, pen1, pen2</p>
+        <div class="upload-controls">
+            <input type="file" id="scoreFileInput" accept=".csv">
+            <button onclick="processScoreData()">โหลดสกอร์การแข่งขัน</button>
+        </div>
+    </div>
+
+    <div class="log-section">
+        <h3>สถานะการนำเข้าข้อมูล:</h3>
+        <pre id="outputLog">ยังไม่มีข้อมูล...</pre>
+    </div>
+    </div>
+
+        <div id="tab2" class="tab-content">
+    <div class="filter-container">
+        <div class="filter-group">
+            <label>สมาพันธ์:</label>
+            <select id="conFilter" onchange="renderRankingTable()">
+                <option value="World">ทั่วโลก (World)</option>
+                </select>
+        </div>
+
+        <div class="filter-group">
+            <label>แสดงผลตามรอบ:</label>
+            <div class="double-select">
+                <select id="cycleMode" onchange="updateCycleDetails()">
+                    <option value="fifa-day">รอบปฏิทินฟีฟ่าเดย์</option>
+                    <option value="year">รอบปี</option>
+                </select>
+                <select id="cycleDetail" onchange="renderRankingTable()">
+                    </select>
+            </div>
+        </div>
+    </div>
+
+    <table id="fifaTable">
+        <thead>
+    <tr>
+        <th onclick="sortTable('worldRank')">อันดับโลก <i class="fas fa-sort"></i></th>
+        <th class="small-col" onclick="sortTable('rankChange')">↑↓</th> 
+        
+        <th id="conRankHeader" onclick="sortTable('conRank')">อันดับสมาพันธ์ <i class="fas fa-sort"></i></th>
+        <th id="conRankChangeHeader" class="small-col" onclick="sortTable('conRankChange')">↑↓</th> 
+        
+        <th onclick="sortTable('name')" class="text-left">ชื่อทีม <i class="fas fa-sort"></i></th>
+        <th onclick="sortTable('pts')">คะแนน <i class="fas fa-sort"></i></th>
+        
+        <th class="small-col" onclick="sortTable('ptsChange')">+/-</th> 
+    </tr>
+</thead>
+        <tbody id="rankingTableBody">
+            </tbody>
+    </table>
+</div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <div id="tab3" class="tab-content">
+    <div class="filter-container">
+        <div class="filter-group">
+            <label>สมาพันธ์:</label>
+            <select id="statConFilter" onchange="updateStatTeamFilter()">
+                <option value="World">ทั่วโลก (World)</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>ทีม:</label>
+            <select id="statTeamFilter" onchange="renderTeamStats()">
+                <option value="">-- โปรดโหลดข้อมูลและเลือกทีม --</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="teamStatsContent" style="display: none;">
+        
+        <div class="chart-container">
+            <canvas id="rankingChart"></canvas>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3><i class="fas fa-trophy"></i> สถิติอันดับโลก</h3>
+                <ul>
+                    <li>อันดับสูงสุด: <span id="statHighestRank"></span></li>
+                    <li>อันดับต่ำสุด: <span id="statLowestRank"></span></li>
+                    <li>อันดับพุ่งสูงสุด (ต่อรอบ): <span id="statBestRankChange" class="positive"></span></li>
+                    <li>อันดับตกต่ำสุด (ต่อรอบ): <span id="statWorstRankChange" class="negative"></span></li>
+                </ul>
+            </div>
+            
+            <div class="stat-card">
+                <h3><i class="fas fa-star"></i> สถิติคะแนน</h3>
+                <ul>
+                    <li>คะแนนสูงสุด: <span id="statHighestPts"></span></li>
+                    <li>คะแนนต่ำสุด: <span id="statLowestPts"></span></li>
+                    <li>คะแนนเพิ่มสูงสุด (ต่อรอบ): <span id="statBestPtsChange" class="positive"></span></li>
+                    <li>คะแนนลดต่ำสุด (ต่อรอบ): <span id="statWorstPtsChange" class="negative"></span></li>
+                </ul>
+            </div>
+            
+            <div class="stat-card">
+                <h3><i class="fas fa-futbol"></i> สถิติผลการแข่งขันรวม</h3>
+                <div class="match-stats">
+                    <div class="match-stat-item">ชนะ <strong id="statWins" class="positive"></strong></div>
+                    <div class="match-stat-item">เสมอ <strong id="statDraws"></strong></div>
+                    <div class="match-stat-item">แพ้ <strong id="statLosses" class="negative"></strong></div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+    <h3><i class="fas fa-bullseye"></i> สถิติประตู (ไม่รวมจุดโทษ)</h3>
+    <ul>
+        <li>ประตูได้: <strong id="statGoalsFor" class="positive">0</strong></li>
+        <li>ประตูเสีย: <strong id="statGoalsAgainst" class="negative">0</strong></li>
+        <li>ผลต่างประตู: <strong id="statGoalDiff">0</strong></li>
+    </ul>
+    </div>
+
+    <div class="recent-matches-container">
+    <h3><i class="fas fa-history"></i> ผลการแข่งขัน 5 นัดหลังสุด (เรียงตามรอบฟีฟ่าเดย์)</h3>
+    <ul id="recentMatchesList" class="recent-matches-list">
+        <li>ยังไม่มีข้อมูลผลการแข่งขัน...</li>
+    </ul>
+    </div>
+            
+        </div>
+    </div>
+</div>
+
+    <div id="tab4" class="tab-content">
+    <h2>คัดลอกข้อมูลการจัดอันดับ</h2>
+    
+    <div class="filter-container">
+        <div class="filter-group">
+            <label>เลือกรอบฟีฟ่าเดย์:</label>
+            <select id="exportFifaDay" onchange="generateExportData()">
+                <option value="">-- โปรดโหลดข้อมูลในแท็บ 1 ก่อน --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="export-section">
+        <h3>ผลลัพธ์ข้อมูล</h3>
+        <textarea id="exportResult" rows="8" readonly placeholder="ข้อมูลสำหรับคัดลอกจะปรากฏที่นี่..."></textarea>
+        <button onclick="copyExportData()" class="copy-btn"><i class="fas fa-copy"></i> คัดลอกข้อความ</button>
+    </div>
+</div>
+
+<script src="export-data.js"></script>
+    <script src="team-stats.js"></script>
+    <script src="main.js"></script>
+    <script src="data-import.js"></script>
+    <script src="ranking-table.js"></script>
+</body>
+</html>

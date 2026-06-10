@@ -1,0 +1,424 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+h1, h2, h3 {
+    color: #2c3e50;
+}
+
+/* Tab Menu Styles */
+.tab-menu {
+    display: flex;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.tab-link {
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s;
+    color: #666;
+}
+
+.tab-link:hover {
+    background-color: #f0f0f0;
+}
+
+.tab-link.active {
+    color: #2980b9;
+    border-bottom: 3px solid #2980b9;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeEffect 0.5s;
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+/* Upload Section Styles */
+.upload-section {
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.upload-section p {
+    font-family: monospace;
+    color: #555;
+    margin-top: 0;
+}
+
+button {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #2ecc71;
+}
+
+/* Log Section */
+.log-section {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 20px;
+}
+
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Filter Section */
+.filter-container {
+    display: flex;
+    gap: 20px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.double-select {
+    display: flex;
+    gap: 10px;
+}
+
+select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th {
+    background-color: #2c3e50;
+    color: white;
+    padding: 12px 8px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+    user-select: none;
+}
+
+th:hover {
+    background-color: #34495e;
+}
+
+th.text-left { text-align: left; }
+
+td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+tr:hover { background-color: #f1f1f1; }
+
+.small-col {
+    width: 40px;
+    font-size: 12px;
+    color: #888;
+    padding: 0;
+}
+
+.text-left { text-align: left; }
+
+/* Rank/Score changes */
+.positive { color: #27ae60; font-weight: bold; }
+.negative { color: #e74c3c; font-weight: bold; }
+
+/* เพิ่มต่อท้ายใน style.css */
+
+.chart-container {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    height: 350px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.stat-card h3 {
+    margin-top: 0;
+    border-bottom: 2px solid #2980b9;
+    padding-bottom: 10px;
+    color: #2c3e50;
+    font-size: 16px;
+}
+
+.stat-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.stat-card li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #ccc;
+    display: flex;
+    justify-content: space-between;
+}
+
+.stat-card li:last-child {
+    border-bottom: none;
+}
+
+.match-stats {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.match-stat-item {
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.match-stat-item strong {
+    font-size: 24px;
+    margin-top: 5px;
+}
+
+/* เพิ่มต่อท้ายไฟล์ style.css */
+/* --- ส่วน 5 นัดหลังสุด (ปรับปรุงใหม่) --- */
+.recent-matches-container {
+    background: transparent;
+    margin-top: 25px;
+}
+
+.recent-matches-container h3 {
+    margin-top: 0;
+    border-bottom: 2px solid #2980b9;
+    padding-bottom: 10px;
+    color: #2c3e50;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.recent-matches-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.no-data {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    color: #7f8c8d;
+    border: 1px dashed #bdc3c7;
+}
+
+/* Match Card Styles */
+.match-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border: 1px solid #eaeaea;
+    border-left: 5px solid #bdc3c7; /* สีเริ่มต้น (เสมอ) */
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.match-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.match-win { border-left-color: #27ae60; }
+.match-lose { border-left-color: #e74c3c; }
+.match-draw { border-left-color: #f1c40f; }
+
+.match-meta {
+    background: #f8f9fa;
+    padding: 8px 15px;
+    font-size: 13px;
+    color: #7f8c8d;
+    border-bottom: 1px solid #eee;
+}
+
+.match-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+.match-team {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 500;
+    color: #34495e;
+}
+
+.match-team.left { text-align: right; }
+.match-team.right { text-align: left; }
+
+.highlight-team { 
+    color: #2980b9; 
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.match-score-container {
+    padding: 0 20px;
+    text-align: center;
+    min-width: 120px;
+}
+
+.main-score {
+    font-size: 22px;
+    font-weight: 800;
+    color: #2c3e50;
+    background: #ecf0f1;
+    padding: 4px 15px;
+    border-radius: 20px;
+    display: inline-block;
+    letter-spacing: 2px;
+}
+
+.pen-score {
+    display: block;
+    font-size: 13px;
+    color: #e67e22;
+    margin-top: 6px;
+    font-weight: 600;
+}
+
+/* --- จัดตำแหน่งปุ่มและช่องเลือกไฟล์ในแท็บที่ 1 ให้เหมาะสม --- */
+.upload-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;          /* ระยะห่างระหว่างช่องเลือกไฟล์กับปุ่ม */
+    margin-top: 10px;
+    flex-wrap: wrap;    /* หากหน้าจอแคบ ให้ปุ่มตัดลงมาบรรทัดใหม่ได้อัตโนมัติ */
+}
+
+.upload-controls input[type="file"] {
+    flex: 1;            /* ให้ช่องเลือกไฟล์ขยายความกว้างเต็มพื้นที่ที่เหลือ */
+    min-width: 250px;   /* กำหนดความกว้างขั้นต่ำของช่องเลือกไฟล์ */
+    padding: 8px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.upload-controls button {
+    min-width: 160px;   /* ล็อกความกว้างของปุ่มโหลดข้อมูลให้เท่ากันทุกปุ่ม */
+    padding: 10px 15px; /* เพิ่มพื้นที่กดให้ปุ่มดูสมส่วนและสวยงามขึ้น */
+    font-weight: bold;
+}
+
+/* เพิ่มเติมสไตล์หัวตารางขนาดเล็กในแท็บ 2 ให้ผู้ใช้รู้ว่ากดคลิกได้ */
+th.small-col:hover {
+    background-color: #34495e;
+    text-decoration: underline;
+}
+
+/* --- ส่วนของแท็บ 4 (ส่งออกข้อมูล) --- */
+.export-section {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.export-section h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #2c3e50;
+}
+
+#exportResult {
+    width: 100%;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #bdc3c7;
+    background: #f8f9fa;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical; /* ให้ผู้ใช้ขยายกล่องข้อความขึ้นลงได้ */
+    box-sizing: border-box;
+}
+
+.copy-btn {
+    align-self: flex-start;
+    background-color: #3498db;
+    font-size: 15px;
+    padding: 10px 20px;
+}
+
+.copy-btn:hover {
+    background-color: #2980b9;
+}
